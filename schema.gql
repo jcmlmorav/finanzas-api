@@ -1,0 +1,29 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Author {
+  firstName: String
+  id: Int!
+  lastName: String
+  posts: [Post!]!
+}
+
+type Movement {
+  amount: Float!
+  date: String!
+  description: String!
+  id: Int!
+  type: String!
+}
+
+type Post {
+  id: Int!
+  title: String!
+  votes: Int
+}
+
+type Query {
+  author(id: Int!): Author!
+  movements(type: String!): [Movement!]!
+}
