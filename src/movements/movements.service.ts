@@ -1,4 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Movement } from './schemas/movement.schema';
+import { CreateMovementDto } from './dtos/create.dto';
 
 const MOVEMENTS = [
   {
@@ -26,7 +30,16 @@ const MOVEMENTS = [
 
 @Injectable()
 export class MovementsService {
-  async findByType(type: string) {
-    return MOVEMENTS.filter((movement) => movement.type === type);
+  constructor(
+    @InjectModel(Movement.name) private movementModel: Model<Movement>,
+  ) {}
+
+  async create(createMovementDto: CreateMovementDto): Promise<Movement> {
+    const created = new this.movementModel(createMovementDto);
+    return created.save();
+  }
+
+  async findByType(type: string): Promise<Movement[]> {
+    return this.movementModel.find({ type: type }).exec();
   }
 }

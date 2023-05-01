@@ -14,12 +14,23 @@ type Balance {
   total: Int!
 }
 
+input CreateMovementInput {
+  amount: Float!
+  date: String!
+  description: String!
+  type: String!
+}
+
 type Movement {
   amount: Float!
   date: String!
   description: String!
-  id: Int!
+  id: ID!
   type: String!
+}
+
+type Mutation {
+  createMovement(movement: CreateMovementInput!): Movement!
 }
 
 type Post {

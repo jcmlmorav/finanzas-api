@@ -1,9 +1,9 @@
-import { Field, ObjectType, Int, Float } from '@nestjs/graphql';
+import { Field, ObjectType, Float, ID } from '@nestjs/graphql';
 
 @ObjectType()
 export class Movement {
-  @Field((type) => Int)
-  id: number;
+  @Field((type) => ID)
+  id: string;
 
   @Field()
   type: string;
