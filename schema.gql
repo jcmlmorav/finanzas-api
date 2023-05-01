@@ -9,6 +9,11 @@ type Author {
   posts: [Post!]!
 }
 
+type Balance {
+  id: Int!
+  total: Int!
+}
+
 type Movement {
   amount: Float!
   date: String!
@@ -25,5 +30,6 @@ type Post {
 
 type Query {
   author(id: Int!): Author!
+  balance: Balance!
   movements(type: String!): [Movement!]!
 }
