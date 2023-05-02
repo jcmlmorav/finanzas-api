@@ -10,8 +10,8 @@ type Author {
 }
 
 type Balance {
-  id: Int!
-  total: Int!
+  id: ID!
+  total: Float!
 }
 
 input CreateMovementInput {

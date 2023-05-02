@@ -1,10 +1,10 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ObjectType, ID } from '@nestjs/graphql';
 
 @ObjectType()
 export class Balance {
-  @Field((type) => Int)
-  id: number;
+  @Field((type) => ID)
+  id: string;
 
-  @Field((type) => Int)
+  @Field((type) => Float)
   total: number;
 }

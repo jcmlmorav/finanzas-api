@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Movement } from './schemas/movement.schema';
 import { CreateMovementDto } from './dtos/create.dto';
 
-const MOVEMENTS = [
+/* const MOVEMENTS = [
   {
     id: 0,
     type: 'income',
@@ -26,7 +26,7 @@ const MOVEMENTS = [
     description: 'Mi primer egreso',
     amount: 80000,
   },
-];
+]; */
 
 @Injectable()
 export class MovementsService {
