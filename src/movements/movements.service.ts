@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movement } from './schemas/movement.schema';
 import { CreateMovementDto } from './dtos/create.dto';
+import { BalanceService } from 'src/balance/balance.service';
 
 /* const MOVEMENTS = [
   {
@@ -32,11 +33,13 @@ import { CreateMovementDto } from './dtos/create.dto';
 export class MovementsService {
   constructor(
     @InjectModel(Movement.name) private movementModel: Model<Movement>,
+    private balanceService: BalanceService
   ) {}
 
   async create(createMovementDto: CreateMovementDto): Promise<Movement> {
-    const created = new this.movementModel(createMovementDto);
-    return created.save();
+    const movementCreated = new this.movementModel(createMovementDto);
+    this.balanceService.update(movementCreated.type, movementCreated.amount);
+    return movementCreated.save();
   }
 
   async findByType(type: string): Promise<Movement[]> {

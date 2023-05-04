@@ -17,4 +17,18 @@ export class BalanceService {
   async findOne(): Promise<Balance> {
     return this.balanceModel.findOne().exec();
   }
+
+  async update(type: string, amount: number): Promise<Balance> {
+    const balance = await this.balanceModel.findOneAndUpdate({}, {});
+
+    if (type === 'income') {
+      balance.total = balance.total + amount;
+    } else {
+      balance.total = balance.total - amount;
+    }
+
+    balance.save();
+
+    return balance;
+  }
 }

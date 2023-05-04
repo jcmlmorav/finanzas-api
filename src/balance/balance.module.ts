@@ -9,5 +9,6 @@ import { Balance, BalanceSchema } from './schemas/balance.schema';
     MongooseModule.forFeature([{ name: Balance.name, schema: BalanceSchema }]),
   ],
   providers: [BalanceResolver, BalanceService],
+  exports: [BalanceService]
 })
 export class BalanceModule {}
