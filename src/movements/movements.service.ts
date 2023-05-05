@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Movement } from './schemas/movement.schema';
 import { CreateMovementDto } from './dtos/create.dto';
+import { UpdateMovementDto } from './dtos/update.dto';
 import { BalanceService } from 'src/balance/balance.service';
 
 /* const MOVEMENTS = [
@@ -33,16 +34,59 @@ import { BalanceService } from 'src/balance/balance.service';
 export class MovementsService {
   constructor(
     @InjectModel(Movement.name) private movementModel: Model<Movement>,
-    private balanceService: BalanceService
+    private balanceService: BalanceService,
   ) {}
-
-  async create(createMovementDto: CreateMovementDto): Promise<Movement> {
-    const movementCreated = new this.movementModel(createMovementDto);
-    this.balanceService.update(movementCreated.type, movementCreated.amount);
-    return movementCreated.save();
-  }
 
   async findByType(type: string): Promise<Movement[]> {
     return this.movementModel.find({ type: type }).exec();
+  }
+
+  async create(createMovementDto: CreateMovementDto): Promise<Movement> {
+    const movementCreated = new this.movementModel(createMovementDto);
+
+    const computedAmount =
+      createMovementDto.type === 'income'
+        ? createMovementDto.amount
+        : -createMovementDto.amount;
+
+    this.balanceService.update(computedAmount);
+
+    return movementCreated.save();
+  }
+
+  async update(updateMovementDto: UpdateMovementDto): Promise<Movement> {
+    const { id, type, description, date, amount } = updateMovementDto;
+    const movementSaved = await this.movementModel.findByIdAndUpdate(id);
+
+    let computedAmount = 0;
+
+    if (movementSaved.type && type) {
+      const difference = movementSaved.amount - amount;
+
+      if (type === 'income') {
+        computedAmount = -(difference);
+      } else {
+        computedAmount = difference;
+      }
+    }
+
+    if (movementSaved.type === 'income' && type === 'expense') {
+      computedAmount = -movementSaved.amount - amount;
+    }
+    
+    if (movementSaved.type === 'expense' && type === 'income') {
+      computedAmount = movementSaved.amount + amount;
+    }
+
+    console.log('Computed: ', computedAmount);
+
+    movementSaved.type = type;
+    movementSaved.description = description;
+    movementSaved.date = date;
+    movementSaved.amount = amount;
+
+    this.balanceService.update(computedAmount);
+
+    return movementSaved.save();
   }
 }
