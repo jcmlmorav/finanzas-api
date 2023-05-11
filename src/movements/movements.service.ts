@@ -41,6 +41,10 @@ export class MovementsService {
     return this.movementModel.find({ type: type }).exec();
   }
 
+  async findById(id: string): Promise<Movement> {
+    return this.movementModel.findById(id);
+  }
+
   async create(createMovementDto: CreateMovementDto): Promise<Movement> {
     const movementCreated = new this.movementModel(createMovementDto);
 
@@ -77,8 +81,6 @@ export class MovementsService {
     if (movementSaved.type === 'expense' && type === 'income') {
       computedAmount = movementSaved.amount + amount;
     }
-
-    console.log('Computed: ', computedAmount);
 
     movementSaved.type = type;
     movementSaved.description = description;

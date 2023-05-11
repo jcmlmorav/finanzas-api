@@ -43,6 +43,7 @@ type Post {
 type Query {
   author(id: Int!): Author!
   balance: Balance!
+  movement(id: String!): Movement!
   movements(type: String!): [Movement!]!
 }
 

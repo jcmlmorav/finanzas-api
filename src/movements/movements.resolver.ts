@@ -13,6 +13,11 @@ export class MovementsResolver {
     return this.movementsService.findByType(type);
   }
 
+  @Query((returns) => Movement, { name: 'movement' })
+  async getMovement(@Args('id') id: string) {
+    return this.movementsService.findById(id);
+  }
+
   @Mutation((returns) => Movement)
   async createMovement(@Args('movement') movement: CreateMovementInput) {
     return this.movementsService.create(movement);
