@@ -27,4 +27,9 @@ export class MovementsResolver {
   async updateMovement(@Args('movement') movement: UpdateMovementInput) {
     return this.movementsService.update(movement);
   }
+
+  @Mutation((returns) => Movement)
+  async deleteMovement(@Args('id') id: string) {
+    return this.movementsService.delete(id);
+  }
 }

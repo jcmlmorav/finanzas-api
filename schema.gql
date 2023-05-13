@@ -31,6 +31,7 @@ type Movement {
 
 type Mutation {
   createMovement(movement: CreateMovementInput!): Movement!
+  deleteMovement(id: String!): Movement!
   updateMovement(movement: UpdateMovementInput!): Movement!
 }
 

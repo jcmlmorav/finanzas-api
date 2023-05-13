@@ -91,4 +91,16 @@ export class MovementsService {
 
     return movementSaved.save();
   }
+
+  async delete(id: string): Promise<Movement> {
+    const movementDeleted = await this.movementModel.findByIdAndDelete(id);
+
+    if (movementDeleted.type === "income") {
+      this.balanceService.update(-movementDeleted.amount);
+    } else {
+      this.balanceService.update(movementDeleted.amount);
+    }
+
+    return movementDeleted;
+  }
 }
